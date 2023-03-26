@@ -8,6 +8,7 @@ import plotly.express as px
 from streamlit_option_menu import option_menu
 from google.oauth2 import service_account
 from gsheetsdb import connect
+from gspread_pandas import Spread,Client
 
 # Create a connection object.
 scope = ["https://www.googleapis.com/auth/spreadsheets",]
