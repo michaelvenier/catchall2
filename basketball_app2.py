@@ -22,17 +22,25 @@ conn = connect(credentials=credentials)
 # Perform SQL query on the Google Sheet.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
-    return rows
+# def run_query(query):
+#     rows = conn.execute(query, headers=1)
+#     rows = rows.fetchall()
+#     return rows
 
 sheet_url = st.secrets["private_gsheets_url"]
-columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
+query = f'SELECT * FROM "{sheet_url}"'
+rows = conn.execute(query, headers=1).fetchall()
 
-# Print results.
-for age, team in columns:
-    st.write(f"Age: {age}, Team: {team}")
+# Convert data to a Pandas DataFrame.
+df = pd.DataFrame.from_records(rows[1:], columns=rows[0])
+
+# Print the DataFrame.
+st.dataframe(df)
+# columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
+
+# # Print results.
+# for age, team in columns:
+#     st.write(f"Age: {age}, Team: {team}")
     
 st.title('NBA Player Stats')
 
