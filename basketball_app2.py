@@ -27,12 +27,17 @@ conn = connect(credentials=credentials)
 #     rows = rows.fetchall()
 #     return rows
 
-sheet_url = st.secrets["private_gsheets_url"]
-query = f'SELECT * FROM "{sheet_url}"'
-rows = conn.execute(query, headers=1).fetchall()
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
 
-# Convert data to a Pandas DataFrame.
-df = pd.DataFrame.from_records(rows[0:], columns=rows[0])
+sheet_url = st.secrets["private_gsheets_url"]
+data = run_query(f'SELECT * FROM "{sheet_url}"')
+
+# Convert the list of tuples to a Pandas DataFrame.
+df = pd.DataFrame(data[1:], columns=data[0])
+
 
 # Print the DataFrame.
 st.dataframe(df)
