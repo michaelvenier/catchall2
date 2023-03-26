@@ -11,33 +11,28 @@ from gsheetsdb import connect
 from gspread_pandas import Spread,Client
 
 # Create a connection object.
-scope = ["https://www.googleapis.com/auth/spreadsheets",]
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"],
-    scopes=scope,
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ],
 )
-client = Client(scope=scope,creds=credentials)
-spreadsheetname = "Summary"
-spread = Spread(spreadsheetname,client = client)
-st.write(spread.url)
-
-
-#conn = connect(credentials=credentials)
+conn = connect(credentials=credentials)
 
 # Perform SQL query on the Google Sheet.
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 
-# def run_query(query):
-#     rows = conn.execute(query, headers=1)
-#     rows = rows.fetchall()
-#     return rows
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
 
 sheet_url = st.secrets["private_gsheets_url"]
-# rows = run_query(f'SELECT * FROM "https://docs.google.com/spreadsheets/d/1RbLWqEAVkAeLKpLj_BeRkmUGfDKR9Wp6/edit#gid=1020967856"')
+rows = run_query(f'SELECT * FROM "https://docs.google.com/spreadsheets/d/1RbLWqEAVkAeLKpLj_BeRkmUGfDKR9Wp6/edit#gid=1020967856"')
 
 # Print results.
-# for row in rows:
-#     st.write(f"{row.Age} has a :{row.Player}:")
+for row in rows:
+    st.write(f"{column.Age} has a :{column.Team}:")
 
 st.title('NBA Player Stats')
 
