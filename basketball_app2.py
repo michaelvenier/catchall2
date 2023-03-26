@@ -26,21 +26,14 @@ conn = connect(credentials=credentials)
 #     rows = conn.execute(query, headers=1)
 #     rows = rows.fetchall()
 #     return rows
-
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    return rows
-
+# Perform SQL query on the Google Sheet.
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
 sheet_url = st.secrets["private_gsheets_url"]
+query = f'SELECT * FROM "{sheet_url}"'
+rows = conn.execute(query, headers=1).fetchall()
 
-# Query the sheet to get all rows and columns.
-data = run_query(f'SELECT * FROM "{sheet_url}"')
-
-# Get the first row as column names and remove any leading or trailing white spaces.
-columns = [i.strip() for i in data[0]]
-
-# Create a Pandas DataFrame from the remaining rows of the sheet.
-df = pd.DataFrame(data[1:], columns=columns)
+# Convert data to a Pandas DataFrame.
+df = pd.DataFrame.from_records(rows[1:], columns=rows[0])
 # Print the DataFrame.
 st.dataframe(df)
 # columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
