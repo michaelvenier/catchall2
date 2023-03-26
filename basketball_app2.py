@@ -26,30 +26,24 @@ This is my model. Here's how to use it.
 
 #SECTION: GETTING, CLEANING AND FILTERING DATA
 
-# Create a connection object.
-credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"],
-    scopes=[
-        "https://www.googleapis.com/auth/spreadsheets",
-    ],
-)
-conn = connect(credentials=credentials)
+@st.cache() #recent
+def load_data2(): #recent
+    # Create a connection object.
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=[
+            "https://www.googleapis.com/auth/spreadsheets",
+        ],
+    )
+    conn = connect(credentials=credentials)
+    sheet_url = st.secrets["private_gsheets_url"]
+    query = f'SELECT * FROM "{sheet_url}"'
+    rows = conn.execute(query, headers=0).fetchall()
 
-# Perform SQL query on the Google Sheet.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-
-# def run_query(query):
-#     rows = conn.execute(query, headers=1)
-#     rows = rows.fetchall()
-#     return rows
-# Perform SQL query on the Google Sheet.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-sheet_url = st.secrets["private_gsheets_url"]
-query = f'SELECT * FROM "{sheet_url}"'
-rows = conn.execute(query, headers=0).fetchall()
-
-# Convert data to a Pandas DataFrame.
-df2 = pd.DataFrame.from_records(rows, columns=rows[0])
+    # Convert data to a Pandas DataFrame.
+    df2 = pd.DataFrame.from_records(rows, columns=rows[0])
+    return df2 #recent
+df2 = load_data2() #recent
 
 #Rename columns
 df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
