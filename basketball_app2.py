@@ -33,10 +33,10 @@ def run_query(query):
     return rows
 
 sheet_url = st.secrets["private_gsheets_url"]
-data = run_query(f'SELECT * FROM "{sheet_url}"')
+df_rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
-# Convert the list of tuples to a Pandas DataFrame.
-df = pd.DataFrame(data[1:], columns=data[0])
+# Convert the rows to a pandas DataFrame.
+df = pd.DataFrame(df_rows[1:], columns=df_rows[0])
 
 
 # Print the DataFrame.
