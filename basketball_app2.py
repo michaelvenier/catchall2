@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import plotly.express as px
+import requests
 from streamlit_option_menu import option_menu
 from google.oauth2 import service_account
 from gsheetsdb import connect
