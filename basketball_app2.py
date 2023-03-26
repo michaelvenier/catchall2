@@ -136,7 +136,7 @@ def byPlayer():
     filt = df2.Player.isin(players)
     df = df2[filt]
     return df
-
+#
 def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NEEDS WORK *&$#(* &^# *&^# (*&#^ )*$&^()*&@ )*(&^# )(*^&@)
     listt = []
     for i in range(min(df[x])):
