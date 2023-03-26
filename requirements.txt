@@ -7,3 +7,4 @@ streamlit==1.17.0
 streamlit_option_menu==0.3.2
 gsheetsdb
 gspread_pandas
+lxml
