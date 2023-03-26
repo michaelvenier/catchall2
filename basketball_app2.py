@@ -77,13 +77,17 @@ df1 = load_data(selected_year)
 @st.cache()
 def load_data_playoffs(year):
     url = "https://www.basketball-reference.com/playoffs/NBA_" + str(year) + "_per_game.html"
-    html = pd.read_html(url, header = 0)
+    response = requests.get(url)
+    if response.status_code == 404:
+        return None
+    html = pd.read_html(url, header=0)
     df = html[0]
     raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
     raw = raw.fillna(0)
     df1 = raw.drop(['Rk'], axis=1)
     return df1
-dfP = load_data_playoffs(selected_year)
+if load_data_playoffs(selected_year) is not None:
+    dfP = load_data_playoffs(selected_year)
 
 # User input Position selection and filtering data by positions
 unique_pos = ['C','PF','SF','PG','SG']
