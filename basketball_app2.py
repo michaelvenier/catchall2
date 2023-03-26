@@ -108,7 +108,7 @@ if scenario=='Playoffs': #In the playoffs we start with 0 as the minimum since l
     mp = int(st.sidebar.text_input('Minimum Minutes Played','0'))
 else:
     mp = int(st.sidebar.text_input('Minimum Minutes Played',str(default_mins)))
-df2 =df2[df2["Total Minutes"] >= mp] #Filter df2 by MP. 
+df2 =df2[df2["MP"] >= mp] #Filter df2 by MP. 
 
 #Sort data by Total Score and reindex.j
 df2.sort_values(by=['Total Score'],axis=0,ascending=False,inplace=True)
