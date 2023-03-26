@@ -83,7 +83,7 @@ def load_data_playoffs(year):
     raw = raw.fillna(0)
     df1 = raw.drop(['Rk'], axis=1)
     return df1
-dfP = load_data(selected_year)
+dfP = load_data_playoffs(selected_year)
 
 # User input Position selection and filtering data by positions
 unique_pos = ['C','PF','SF','PG','SG']
