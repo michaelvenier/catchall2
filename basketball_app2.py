@@ -33,7 +33,7 @@ credentials = service_account.Credentials.from_service_account_info(
         "https://www.googleapis.com/auth/spreadsheets",
     ],
 )
-@st.cache_data(ttl=600)
+@st.cache
 def get_data():
     # Create a connection object.
     conn = connect(credentials=credentials)
