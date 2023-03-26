@@ -30,7 +30,7 @@ conn = connect(credentials=credentials)
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 sheet_url = st.secrets["private_gsheets_url"]
 query = f'SELECT * FROM "{sheet_url}"'
-rows = conn.execute(query, headers=1).fetchall()
+rows = conn.execute(query, headers=0).fetchall()
 
 # Convert data to a Pandas DataFrame.
 df = pd.DataFrame.from_records(rows[1:], columns=rows[0])
