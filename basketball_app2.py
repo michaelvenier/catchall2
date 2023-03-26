@@ -55,8 +55,8 @@ df2 = pd.DataFrame.from_records(rows, columns=rows[0])
 df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
 df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
 #Make data type appropriate
-df2['Year'] = df2['Year'].astype(int).astype(str) 
-df2['Age'] = df2['Age'].astype(int).astype(str)
+df2['Year'] = df2['Year'].astype(int)
+df2['Age'] = df2['Age'].astype(int)
 df2['G'] = df2['G'].astype(int)
 df2['GS'] = df2['GS'].astype(int)
 df2['MP'] = df2['MP'].astype(int)
