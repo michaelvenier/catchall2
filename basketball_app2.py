@@ -29,16 +29,18 @@ conn = connect(credentials=credentials)
 
 def run_query(query):
     rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
     return rows
 
 sheet_url = st.secrets["private_gsheets_url"]
-df_rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
-# Convert the rows to a pandas DataFrame.
-df = pd.DataFrame(df_rows[1:], columns=df_rows[0])
+# Get column names from the first row of the sheet
+columns = [i.strip() for i in run_query(f'SELECT * FROM "{sheet_url}" LIMIT 1;')[0]]
 
+# Get all other rows as data
+data = run_query(f'SELECT * FROM "{sheet_url}" LIMIT 1,-1;')
 
+# Create a pandas dataframe with column names and data
+df = pd.DataFrame(data, columns=columns)
 # Print the DataFrame.
 st.dataframe(df)
 # columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
