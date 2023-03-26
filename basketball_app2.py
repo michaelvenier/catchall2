@@ -36,6 +36,7 @@ rows = conn.execute(query, headers=0).fetchall()
 df = pd.DataFrame.from_records(rows, columns=rows[0])
 df.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
 df.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
+df['Year'] = df['Year'].astype(int).astype(str)
 # Print the DataFrame.
 st.dataframe(df)
 # columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
