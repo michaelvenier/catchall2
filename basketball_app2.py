@@ -33,14 +33,14 @@ def run_query(query):
 
 sheet_url = st.secrets["private_gsheets_url"]
 
-# Get column names from the first row of the sheet
-columns = [i.strip() for i in run_query(f'SELECT * FROM "{sheet_url}" LIMIT 1;')[0]]
+# Query the sheet to get all rows and columns.
+data = run_query(f'SELECT * FROM "{sheet_url}"')
 
-# Get all other rows as data
-data = run_query(f'SELECT * FROM "{sheet_url}" LIMIT 1,-1;')
+# Get the first row as column names and remove any leading or trailing white spaces.
+columns = [i.strip() for i in data[0]]
 
-# Create a pandas dataframe with column names and data
-df = pd.DataFrame(data, columns=columns)
+# Create a Pandas DataFrame from the remaining rows of the sheet.
+df = pd.DataFrame(data[1:], columns=columns)
 # Print the DataFrame.
 st.dataframe(df)
 # columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
