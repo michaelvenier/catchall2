@@ -102,7 +102,7 @@ df1 = df1[df1.Tm.isin(selected_team)]
 df2 = df2[df2.Team.isin(selected_team)]
 
 #Minutes Played Filter (We don't always want players with low minutes to be included)
-max_games_played = min([82,max(df2['Games Played'])]) #Roughly how many games have been played in the season so far? 
+max_games_played = min([82,max(df2['G'])]) #Roughly how many games have been played in the season so far? 
 default_mins = int((max_games_played/82)*1200)
 if scenario=='Playoffs': #In the playoffs we start with 0 as the minimum since lots of teams play very few games.
     mp = int(st.sidebar.text_input('Minimum Minutes Played','0'))
