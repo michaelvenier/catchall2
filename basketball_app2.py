@@ -9,6 +9,22 @@ from streamlit_option_menu import option_menu
 from google.oauth2 import service_account
 from gsheetsdb import connect
 from gspread_pandas import Spread,Client
+    
+st.title('NBA Player Stats')
+
+#Top menu
+selected_page = option_menu(
+    menu_title=None,
+    options=["Player Stats","Team Stats"],
+    default_index=0,
+    orientation='horizontal'
+)
+
+st.markdown("""
+This is my model. Here's how to use it.
+""")
+
+#SECTION: GETTING, CLEANING AND FILTERING DATA
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
@@ -33,71 +49,21 @@ query = f'SELECT * FROM "{sheet_url}"'
 rows = conn.execute(query, headers=0).fetchall()
 
 # Convert data to a Pandas DataFrame.
-df = pd.DataFrame.from_records(rows, columns=rows[0])
-df.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
-df.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
-df['Year'] = df['Year'].astype(int).astype(str)
-df['Age'] = df['Age'].astype(int).astype(str)
-df['G'] = df['G'].astype(int)
-df['GS'] = df['GS'].astype(int)
-df['MP'] = df['MP'].astype(int)
+df2 = pd.DataFrame.from_records(rows, columns=rows[0])
 
+#Rename columns
+df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
+df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
+#Make data type appropriate
+df2['Year'] = df2['Year'].astype(int).astype(str) 
+df2['Age'] = df2['Age'].astype(int).astype(str)
+df2['G'] = df2['G'].astype(int)
+df2['GS'] = df2['GS'].astype(int)
+df2['MP'] = df2['MP'].astype(int)
 
-
-
-# Print the DataFrame.
-st.dataframe(df)
-# columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
-
-# # Print results.
-# for age, team in columns:
-#     st.write(f"Age: {age}, Team: {team}")
-    
-st.title('NBA Player Stats')
-
-
-#Top menu
-selected_page = option_menu(
-    menu_title=None,
-    options=["Player Stats","Team Stats"],
-    default_index=0,
-    orientation='horizontal'
-)
-
-st.markdown("""
-This is my model. Here's how to use it.
-""")
-
-#SECTION: GETTING AND FILTERING DATA
-
-#Getting the model data
-# @st.cache #???
-excel_file = 'Summary.xlsx'
-df2 = pd.read_excel(excel_file,sheet_name=1)
-df2.drop('Unnamed: 0',axis=1,inplace=True) #delete 1st column which is there mistakenly 
-df2.drop([0,1],axis=0,inplace=True) #delete 0th and 1st rows which are blank.
-#Rename all the columns
-df2.rename(columns = {'Unnamed: 1':'Scenario',
-'Unnamed: 2':'Year', 
-'Unnamed: 3':'Player',
-'Unnamed: 4':'Position',
-'Unnamed: 5':'Age',
-'Unnamed: 6':'Team',
-'Unnamed: 7':'Games Played',
-'Unnamed: 8':'Games Started',
-'Unnamed: 9':'Total Minutes',
-'Unnamed: 10':'Scoring',
-'Unnamed: 11':'Passing',
-'Unnamed: 12':'Rebounds',
-'Unnamed: 13':'Total Offense',
-'Unnamed: 14':'Total Defense',
-'Unnamed: 15':'Total Score',
-'Unnamed: 16':'MP Threshold'},
-inplace=True
-)
 df2.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
     
-#User input year and filtering model data by selected year (Sidebar)
+#User input year and filtering model data by selected year (Sidebar). This needs to be above load_data, a function of year.
 st.sidebar.header('User Input Features')
 selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
@@ -113,11 +79,6 @@ def load_data(year):
     df1 = raw.drop(['Rk'], axis=1)
     return df1
 df1 = load_data(selected_year)
-
-
-# # Sidebar - Team selection
-# sorted_unique_team = sorted(playerstats.Tm.unique())
-# selected_team = st.sidebar.multiselect('Team', sorted_unique_team, sorted_unique_team)
 
 # User input Position selection and filtering data by positions
 unique_pos = ['C','PF','SF','PG','SG']
@@ -261,7 +222,3 @@ def filedownload(df):
     return href
 
 st.markdown(filedownload(df1), unsafe_allow_html=True)
-
-
-    
-#django for csv update.
