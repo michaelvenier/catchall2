@@ -28,13 +28,14 @@ def run_query(query):
     return rows
 
 sheet_url = st.secrets["private_gsheets_url"]
-rows = run_query(f'SELECT * FROM "https://docs.google.com/spreadsheets/d/1RbLWqEAVkAeLKpLj_BeRkmUGfDKR9Wp6/edit#gid=1020967856"')
+columns = run_query(f'SELECT Age, Team FROM "{sheet_url}"')
 
 # Print results.
-for row in rows:
-    st.write(f"{column.Age} has a :{column.Team}:")
-
+for age, team in columns:
+    st.write(f"Age: {age}, Team: {team}")
+    
 st.title('NBA Player Stats')
+
 
 #Top menu
 selected_page = option_menu(
