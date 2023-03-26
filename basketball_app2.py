@@ -74,6 +74,17 @@ def load_data(year):
     return df1
 df1 = load_data(selected_year)
 
+@st.cache()
+def load_data_playoffs(year):
+    url = "https://www.basketball-reference.com/playoffs/NBA_" + str(year) + "_per_game.html"
+    html = pd.read_html(url, header = 0)
+    df = html[0]
+    raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
+    raw = raw.fillna(0)
+    df1 = raw.drop(['Rk'], axis=1)
+    return df1
+dfP = load_data(selected_year)
+
 # User input Position selection and filtering data by positions
 unique_pos = ['C','PF','SF','PG','SG']
 selected_pos = st.sidebar.multiselect('Position', unique_pos, unique_pos)
@@ -157,7 +168,10 @@ def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NE
 if selected_page=='Player Stats':
     st.header('Standard Stats from Basketball Reference')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
-    st.dataframe(df1)
+    if scenario=='Regular Season':
+        st.dataframe(df1)
+    if scenario=='Playoffs':
+        st.dataframe(dfP)
     st.header('The Model Data')
     st.dataframe(df2)
 
