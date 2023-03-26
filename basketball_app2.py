@@ -222,4 +222,3 @@ def filedownload(df):
     return href
 
 st.markdown(filedownload(df1), unsafe_allow_html=True)
-Footer
