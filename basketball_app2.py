@@ -32,7 +32,7 @@ query = f'SELECT * FROM "{sheet_url}"'
 rows = conn.execute(query, headers=1).fetchall()
 
 # Convert data to a Pandas DataFrame.
-df = pd.DataFrame.from_records(rows[2:], columns=rows[1])
+df = pd.DataFrame.from_records(rows[0:], columns=rows[0])
 
 # Print the DataFrame.
 st.dataframe(df)
