@@ -26,7 +26,7 @@ This is my model. Here's how to use it.
 
 #SECTION: GETTING, CLEANING AND FILTERING DATA
 
-@st.cache(allow_output_mutation=True,suppress_st_warning=True) #recent
+@st.cache(suppress_st_warning=True) #recent
 def load_data2(): #recent
     # Create a connection object.
     credentials = service_account.Credentials.from_service_account_info(
