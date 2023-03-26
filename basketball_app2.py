@@ -33,43 +33,40 @@ credentials = service_account.Credentials.from_service_account_info(
         "https://www.googleapis.com/auth/spreadsheets",
     ],
 )
-conn = connect(credentials=credentials)
+@st.cache_data(ttl=600)
+def get_data():
+    # Create a connection object.
+    conn = connect(credentials=credentials)
+    sheet_url = st.secrets["private_gsheets_url"]
+    query = f'SELECT * FROM "{sheet_url}"'
+    rows = conn.execute(query, headers=0).fetchall()
 
-# Perform SQL query on the Google Sheet.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
+    # Convert data to a Pandas DataFrame.
+    df = pd.DataFrame.from_records(rows, columns=rows[0])
 
-# def run_query(query):
-#     rows = conn.execute(query, headers=1)
-#     rows = rows.fetchall()
-#     return rows
-# Perform SQL query on the Google Sheet.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-sheet_url = st.secrets["private_gsheets_url"]
-query = f'SELECT * FROM "{sheet_url}"'
-rows = conn.execute(query, headers=0).fetchall()
+    #Rename columns
+    df.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
+    df.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
+    #Make data type appropriate
+    df['Year'] = df['Year'].astype(int)
+    df['Age'] = df['Age'].astype(int)
+    df['G'] = df['G'].astype(int)
+    df['GS'] = df['GS'].astype(int)
+    df['MP'] = df['MP'].astype(int)
 
-# Convert data to a Pandas DataFrame.
-df2 = pd.DataFrame.from_records(rows, columns=rows[0])
-
-#Rename columns
-df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
-df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'Scoring','10':'Passing','11':'Rebounds','12':'Total Offense','13':'Total Defense','14':'Total Score','15':'MP Threshold'},inplace=True)
-#Make data type appropriate
-df2['Year'] = df2['Year'].astype(int)
-df2['Age'] = df2['Age'].astype(int)
-df2['G'] = df2['G'].astype(int)
-df2['GS'] = df2['GS'].astype(int)
-df2['MP'] = df2['MP'].astype(int)
-
-df2.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
+    df.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
     
+    return df
+
+df2 = get_data()
+
 #User input year and filtering model data by selected year (Sidebar). This needs to be above load_data, a function of year.
 st.sidebar.header('User Input Features')
 selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
 
 # Web scraping of NBA player stats from basketball-reference.com
-#@st.cache
+@st.cache(ttl=600)
 def load_data(year):
     url = "https://www.basketball-reference.com/leagues/NBA_" + str(year) + "_per_game.html"
     html = pd.read_html(url, header = 0)
