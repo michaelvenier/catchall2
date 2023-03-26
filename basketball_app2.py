@@ -69,7 +69,7 @@ selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
 
 # Web scraping of NBA player stats from basketball-reference.com
-#@st.cache
+@st.cache
 def load_data(year):
     url = "https://www.basketball-reference.com/leagues/NBA_" + str(year) + "_per_game.html"
     html = pd.read_html(url, header = 0)
