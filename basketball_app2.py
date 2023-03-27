@@ -135,13 +135,13 @@ def byTeam():
         if df['MP'].sum()==0:
             (avgTot,avgOff,avgDef,avgPass,avgScore,avgRebound,avgAge)=(0,0,0,0,0,0,0)
         else:
-            avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted average of total weighted by MP. 
-            avgOff = ((df['Total Offense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of offense weighted by MP.
-            avgDef = ((df['Total Defense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of defense weighted by MP. 
-            avgPass = ((df['Passing']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            avgScore = ((df['Scoring']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            avgRebound = ((df['Rebounds']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            avgAge = ((df['Age']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+            avgTot = ((df['Total Score']*df['MP']).sum())/(df['MP'].sum()) #Weighted average of total weighted by MP. 
+            avgOff = ((df['Total Offense']*df['MP']).sum())/(df['MP'].sum()) #Weighted avg of offense weighted by MP.
+            avgDef = ((df['Total Defense']*df['MP']).sum())/(df['MP'].sum()) #Weighted avg of defense weighted by MP. 
+            avgPass = ((df['Passing']*df['MP']).sum())/(df['MP'].sum())
+            avgScore = ((df['Scoring']*df['MP']).sum())/(df['MP'].sum())
+            avgRebound = ((df['Rebounds']*df['MP']).sum())/(df['MP'].sum())
+            avgAge = ((df['Age']*df['MP']).sum())/(df['MP'].sum())
         data.append((selected_team[i],avgTot,avgOff,avgDef,avgPass,avgScore,avgRebound,avgAge))
     df = pd.DataFrame(data)
     df.columns = ['0','1','2','3','4','5','6','7']
