@@ -61,6 +61,7 @@ df2.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
 #User input year and filtering model data by selected year (Sidebar). This needs to be above load_data, a function of year.
 st.sidebar.header('User Input Features')
 selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
+df_exp = df2
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
 
 # Web scraping of NBA player stats from basketball-reference.com
@@ -148,6 +149,28 @@ def byTeam():
     df.rename(columns = {'0':'Team','1':'Avg Total','2':'Avg Off','3':'Avg Def','4':'Avg Passing','5':'Avg Scoring','6':'Avg Rebounds','7':'Avg Age'},inplace=True)
     return df
 
+def byTeam_exp():
+    data = []
+    for i in range(len(selected_team)):
+        filt = df_exp['Team']==selected_team[i]
+        df = df_exp[filt]
+        avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+        if df['Total Minutes'].sum()==0:
+            avgTot=0
+        else:
+            avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted average of total weighted by MP. 
+            # avgOff = ((df['Total Offense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of offense weighted by MP.
+            # avgDef = ((df['Total Defense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of defense weighted by MP. 
+            # avgPass = ((df['Passing']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+            # avgScore = ((df['Scoring']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+            # avgRebound = ((df['Rebounds']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+            # avgAge = ((df['Age']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+        data.append((selected_team[i],avgTot))
+    df = pd.DataFrame(data)
+    df.columns = ['0','1']
+    df.rename(columns = {'0':'Team','1':'Avg Total'},inplace=True)
+    return df
+
 players = [] #Players are manually selected (via user search) in line 154
 def byPlayer():
     filt = df2.Player.isin(players)
@@ -218,6 +241,7 @@ if selected_page=='Team Stats':
     """)
 
     st.dataframe(byTeam())
+    st.dataframe(byTeam_exp())
 
     #Plot Teams Data
     st.header('Visualization of Various Parameters Vs. Total Score')
