@@ -266,7 +266,7 @@ def byTeam_exp():
     for i in range(len(teams)):
         filt = df_exp['Team']==teams['0'][i]
         df = df_exp[filt]
-        df = df[df['Year'].isin.list(range(2016,current_year+1))]
+        df = df[df['Year'].isin.(list(range(2016,current_year+1)))]
         if df['MP'].sum()==0:
             avgTot=0
         else:
