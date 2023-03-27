@@ -76,6 +76,7 @@ def load_data(year):
     return df1
 df1 = load_data(selected_year)
 
+@st.cache
 def load_data_exp(year):
 
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
@@ -94,7 +95,37 @@ def load_data_exp(year):
     df1.rename(columns={'0':'Team','1':'W'},inplace=True)
     df = pd.concat([df0,df1])
     df.sort_values(by=['Team'],axis=0,ascending=True,inplace=True)
-    df['Team']=['ATL','BOS','BRK','CHO','CHI','CLE','DAL','DEN','DET','GSW','HOU','IND','LAC','LAL','MEM','MIA','MIL','MIN','NOP','NYK','OKC','ORL','PHI','PHO','POR','SAC','SAS','TOR','UTA','WAS']
+    df['Team']=['ATL',
+                'BOS',
+                'BRK',
+                'CHO',
+                'CHI',
+                'CLE',
+                'DAL',
+                'DEN',
+                'DET',
+                'GSW',
+                'HOU',
+                'IND',
+                'LAC',
+                'LAL',
+                'MEM',
+                'MIA',
+                'MIL',
+                'MIN',
+                'NOP',
+                'NYK',
+                'OKC',
+                'ORL',
+                'PHI',
+                'PHO',
+                'POR',
+                'SAC',
+                'SAS',
+                'TOR',
+                'UTA',
+                'WAS'
+               ]
     df.reset_index(drop=True,inplace=True)
     # Select only the columns we want
 
