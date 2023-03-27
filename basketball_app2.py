@@ -6,11 +6,14 @@ import seaborn as sns
 import numpy as np
 import plotly.express as px
 import requests
+import datetime
 from streamlit_option_menu import option_menu
 from google.oauth2 import service_account
 from gsheetsdb import connect
 from gspread_pandas import Spread,Client
-    
+
+current_year = int(datetime.date.today().year)
+
 st.title('NBA Player Stats')
 
 #Top menu
@@ -263,6 +266,7 @@ def byTeam_exp():
     for i in range(len(teams)):
         filt = df_exp['Team']==teams['0'][i]
         df = df_exp[filt]
+        df = df[df['Year'].isin.range(2016,current_year+1)]
         if df['MP'].sum()==0:
             avgTot=0
         else:
@@ -286,6 +290,7 @@ def byPlayer():
     df = df2[filt]
     return df
 #
+@st.experimental_memo
 def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NEEDS WORK *&$#(* &^# *&^# (*&#^ )*$&^()*&@ )*(&^# )(*^&@)
     listt = []
     for i in range(min(df[x])):
