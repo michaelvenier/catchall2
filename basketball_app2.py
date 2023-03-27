@@ -154,11 +154,10 @@ def byTeam_exp():
     for i in range(len(selected_team)):
         filt = df_exp['Team']==selected_team[i]
         df = df_exp[filt]
-        avgTot = ((df['Total Score']*df['MP']).sum())/(df['MP'].sum())
-        if df['Total Minutes'].sum()==0:
+        if df['MP'].sum()==0:
             avgTot=0
         else:
-            avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted average of total weighted by MP. 
+            avgTot = ((df['Total Score']*df['MP']).sum())/(df['MP'].sum()) #Weighted average of total weighted by MP. 
             # avgOff = ((df['Total Offense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of offense weighted by MP.
             # avgDef = ((df['Total Defense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of defense weighted by MP. 
             # avgPass = ((df['Passing']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
