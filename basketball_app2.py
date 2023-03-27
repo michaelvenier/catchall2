@@ -76,6 +76,13 @@ def load_data(year):
     return df1
 df1 = load_data(selected_year)
 
+def load_data_exp(year):
+    url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
+    dfs = pd.read_html(url, match='Eastern Conference|Western Conference')
+    df = pd.concat(dfs)
+    df = df[['Team', 'W']]
+    return df
+
 @st.cache()
 def load_data_playoffs(year):
     url = "https://www.basketball-reference.com/playoffs/NBA_" + str(year) + "_per_game.html"
@@ -241,6 +248,7 @@ if selected_page=='Team Stats':
 
     st.dataframe(byTeam())
     st.dataframe(byTeam_exp())
+    st.dataframe(load_data_exp(selected_year))
 
     #Plot Teams Data
     st.header('Visualization of Various Parameters Vs. Total Score')
