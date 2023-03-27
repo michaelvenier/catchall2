@@ -208,7 +208,7 @@ if selected_page=='Player Stats':
         with sns.axes_style("white"):
             f, ax = plt.subplots(figsize=(7, 5))
             ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
-        st.pyplot()
+        st.pyplot(f)
 
 #Team stats
 if selected_page=='Team Stats':
