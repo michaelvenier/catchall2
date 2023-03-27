@@ -254,7 +254,7 @@ def byTeam():
 def byTeam_exp():
     data = []
     st.dataframe(sorted_unique_team)
-    teams = sorted_unique_team[sorted_unique_team['Team'] != 'TOT']
+    teams = sorted_unique_team[sorted_unique_team['0'] != 'TOT']
     for i in range(len(teams)):
         filt = df_exp['Team']==teams[i]
         df = df_exp[filt]
