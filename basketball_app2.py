@@ -78,7 +78,7 @@ df1 = load_data(selected_year)
 
 @st.cache
 def load_data_exp(year):
-    url = 'https://www.basketball-reference.com/leagues/NBA_'+str(2014)+'_standings.html'
+    url = 'https://www.basketball-reference.com/leagues/NBA_'+str(2016)+'_standings.html'
 
     # Read the HTML table into a list of DataFrames
     dfs = pd.read_html(url,header=0)
@@ -126,7 +126,7 @@ def load_data_exp(year):
                 'WAS'
                ]
     df.reset_index(drop=True,inplace=True)
-    for i in range(2015,year+1):
+    for i in range(2017,year+1):
         url = 'https://www.basketball-reference.com/leagues/NBA_'+str(i)+'_standings.html'
         dfs = pd.read_html(url,header=0)
 
