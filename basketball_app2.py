@@ -179,9 +179,9 @@ if selected_page=='Player Stats':
     if scenario=='Playoffs':
         st.dataframe(dfP)
     st.header('The Model Data')
-    length = len(df2['Player'])
-    tooltips_df = pd.DataFrame({'Scenario':['']*10,'Year':'','Player':'','Position':'','Age':'','Team':'','G':'Games Played','GS':'Games Started','MP':'Minutes Played','Scoring':'','Passing':'','Rebounds':'','Total Offense':'','Total Defense':'','Total Score':''})
-    df2 = df2.style.set_tooltips(tooltips_df)
+#     length = len(df2['Player'])
+#     tooltips_df = pd.DataFrame({'Scenario':['']*10,'Year':'','Player':'','Position':'','Age':'','Team':'','G':'Games Played','GS':'Games Started','MP':'Minutes Played','Scoring':'','Passing':'','Rebounds':'','Total Offense':'','Total Defense':'','Total Score':''})
+#     df2 = df2.style.set_tooltips(tooltips_df)
     st.dataframe(df2)
     #st.dataframe(df2)
 
