@@ -345,7 +345,7 @@ if selected_page=='Player Stats':
 def load_combined_exp():
     df1 = byTeam_exp()
     df2 = load_data_exp(current_year)
-    df2['W']=df1['W'].astype(int)
+    df2['W']=df2['W'].astype(int)
     df1['W']=df2['W'].astype(int)
     return df1
 
