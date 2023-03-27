@@ -371,7 +371,8 @@ if selected_page=='Team Stats':
 
 #Testing the model
 if selected_page=='Testing The Model':
-    st.dataframe(load_combined_exp())
+    dfCombined = load_combined_exp()
+    st.dataframe(dfCombined)
 
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
