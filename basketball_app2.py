@@ -253,7 +253,8 @@ def byTeam():
 @st.experimental_memo
 def byTeam_exp():
     data = []
-    for i in range(len(selected_team)):
+    teams = sorted_unique_team.remove('TOT')
+    for i in range(len(teams)):
         filt = df_exp['Team']==selected_team[i]
         df = df_exp[filt]
         if df['MP'].sum()==0:
