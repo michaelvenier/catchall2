@@ -345,7 +345,7 @@ if selected_page=='Player Stats':
 def load_combined_exp():
     df1 = byTeam_exp()
     df2 = load_data_exp(current_year)
-    df2['W']=df2['W'].astype(int)
+    df2['W']=df1['W'].astype(int)
     df1['W']=df2['W'].astype(int)
     return df1
 
@@ -372,15 +372,10 @@ if selected_page=='Team Stats':
 
 #Testing the model
 if selected_page=='Testing The Model':
+    st.dataframe(load_combined_exp())
     dfCombined = load_combined_exp()
-    st.dataframe(dfCombined)
-    # dummy = byTeam_exp()
-    # dummy1 = load_data_exp(current_year)
-    # dummy1['W']=dummy1['W'].astype(int)
-    # dummy['W']=dummy1['W'].astype(int)
-    # st.dataframe(dummy)
-
-
+    corr = dfCombined['Avg Total'].corr(dfCombined['W'])
+    st.write(corr)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
 def filedownload(df):
