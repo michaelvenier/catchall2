@@ -81,13 +81,13 @@ def load_data_exp(year):
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
 
     # Read the HTML table into a list of DataFrames
-    dfs = pd.read_html(url)
+    dfs = pd.read_html(url,header=0)
 
     # Select the second DataFrame (index 1)
     df0 = dfs[0]
-    df0 = df0['Unnamed: 0']
+    df0 = df0['Team']
     df1 = dfs[1]
-    df1 = df1['Unnamed: 0']
+    df1 = df1['Western Conference']
     df = pd.concat([df0,df1])
     df.reset_index(drop=True,inplace=True)
     # Select only the columns we want
