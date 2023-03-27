@@ -178,6 +178,7 @@ def load_data_exp(year):
                 'UTA',
                 'WAS'
                ]
+        dfTemp.sort_values(by=['Team'],axis=0,ascending=True,inplace=True)
         dfTemp.reset_index(drop=True,inplace=True)
         df['W']+=dfTemp['W']
     return df
