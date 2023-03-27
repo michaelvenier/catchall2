@@ -89,7 +89,7 @@ def load_data_exp(year):
     df = pd.concat([df0,df1])
 
     # Select only the columns we want
-    df = df0['W']
+    df = df['W']
 
     return df
 
