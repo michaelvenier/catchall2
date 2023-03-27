@@ -132,7 +132,7 @@ def byTeam():
     for i in range(len(selected_team)):
         filt = df2['Team']==selected_team[i]
         df = df2[filt]
-        if df['Total Minutes'].sum()==0:
+        if df['MP'].sum()==0:
             (avgTot,avgOff,avgDef,avgPass,avgScore,avgRebound,avgAge)=(0,0,0,0,0,0,0)
         else:
             avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted average of total weighted by MP. 
