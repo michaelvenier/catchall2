@@ -154,7 +154,7 @@ def byTeam_exp():
     for i in range(len(selected_team)):
         filt = df_exp['Team']==selected_team[i]
         df = df_exp[filt]
-        avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
+        avgTot = ((df['Total Score']*df['MP']).sum())/(df['MP'].sum())
         if df['Total Minutes'].sum()==0:
             avgTot=0
         else:
