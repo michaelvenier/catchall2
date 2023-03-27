@@ -179,7 +179,10 @@ if selected_page=='Player Stats':
     if scenario=='Playoffs':
         st.dataframe(dfP)
     st.header('The Model Data')
-    st.dataframe(df2)
+    length = len(df2)
+    tooltips_df = pd.DataFrame({'Scenario':['']*length,'G':'Games Played','GS':'Games Started','MP':'Minutes Played'})
+    st.dataframe(df2.style.set_tooltips(tooltips_df))
+    #st.dataframe(df2)
 
     #Search by player
     st.header('Search By Player')
