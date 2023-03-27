@@ -129,9 +129,7 @@ def load_data_exp(year):
                 'WAS'
                ]
     df.sort_values(by=['Team'],axis=0,ascending=True,inplace=True)
-    st.dataframe(df)
     df.reset_index(drop=True,inplace=True)
-    st.dataframe(df)
     for i in range(2017,year+1):
         url = 'https://www.basketball-reference.com/leagues/NBA_'+str(i)+'_standings.html'
         dfs = pd.read_html(url,header=0)
