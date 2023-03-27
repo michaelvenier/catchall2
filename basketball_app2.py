@@ -250,7 +250,7 @@ def byTeam():
     df.rename(columns = {'0':'Team','1':'Avg Total','2':'Avg Off','3':'Avg Def','4':'Avg Passing','5':'Avg Scoring','6':'Avg Rebounds','7':'Avg Age'},inplace=True)
     return df
 
-#sorted_unique_team = pd.DataFrame(sorted_unique_team)
+sorted_unique_team = pd.DataFrame(sorted_unique_team)
 st.dataframe(sorted_unique_team)
 st.dataframe(list(sorted_unique_team))
 st.write(sorted_unique_team[1])
@@ -262,7 +262,7 @@ def byTeam_exp():
     teams.reset_index(drop=True,inplace=True)
     st.dataframe(teams)
     for i in range(len(teams)):
-        filt = df_exp['Team']==list(teams)[i]
+        filt = df_exp['Team']==list(teams)['0'][i]
         df = df_exp[filt]
         if df['MP'].sum()==0:
             avgTot=0
