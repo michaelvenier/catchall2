@@ -300,6 +300,7 @@ if selected_page=='Team Stats':
     st.dataframe(byTeam())
     dummy = byTeam_exp()
     dummy1 = load_data_exp(selected_year)
+    dummy1['W']=dummy1['W'].astype(int)
     dummy['W']=dummy1['W']
     st.dataframe(dummy)
     # st.dataframe(byTeam_exp())
