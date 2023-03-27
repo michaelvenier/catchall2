@@ -262,7 +262,6 @@ def byTeam_exp():
     data = []
     teams = sorted_unique_team[sorted_unique_team['0'] != 'TOT']
     teams.reset_index(drop=True,inplace=True)
-    st.dataframe(teams)
     for i in range(len(teams)):
         filt = df_exp['Team']==teams['0'][i]
         df = df_exp[filt]
