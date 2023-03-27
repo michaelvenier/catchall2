@@ -61,7 +61,7 @@ df2.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
 #User input year and filtering model data by selected year (Sidebar). This needs to be above load_data, a function of year.
 st.sidebar.header('User Input Features')
 selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
-df_exp = df2
+df_exp = df2 #This unfiltered data will be used when running the experiment to test the model. See line 
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
 
 # Web scraping of NBA player stats from basketball-reference.com
@@ -183,6 +183,7 @@ df2.index = np.arange(1, len(df2) + 1)
 #SECTION: DATA EXPLORATION
 
 #Team Data function. 
+@st.experimental_memo
 def byTeam():
     data = []
     for i in range(len(selected_team)):
@@ -204,6 +205,7 @@ def byTeam():
     df.rename(columns = {'0':'Team','1':'Avg Total','2':'Avg Off','3':'Avg Def','4':'Avg Passing','5':'Avg Scoring','6':'Avg Rebounds','7':'Avg Age'},inplace=True)
     return df
 
+@st.experimental_memo
 def byTeam_exp():
     data = []
     for i in range(len(selected_team)):
@@ -223,6 +225,7 @@ def byTeam_exp():
     df = pd.DataFrame(data)
     df.columns = ['0','1']
     df.rename(columns = {'0':'Team','1':'Avg Total'},inplace=True)
+    df.sort_values(by='Team',axis=0,ascending=True,inplace=True)
     return df
 
 players = [] #Players are manually selected (via user search) in line 154
@@ -295,8 +298,12 @@ if selected_page=='Team Stats':
     """)
 
     st.dataframe(byTeam())
-    st.dataframe(byTeam_exp())
-    st.dataframe(load_data_exp(selected_year))
+    dummy = byTeam_exp()
+    dummy1 = load_data_exp(selected_year)
+    dummy['W']=dummy1['W']
+    st.dataframe(dummy)
+    # st.dataframe(byTeam_exp())
+    # st.dataframe(load_data_exp(selected_year))
 
     #Plot Teams Data
     st.header('Visualization of Various Parameters Vs. Total Score')
