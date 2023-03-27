@@ -19,7 +19,7 @@ st.title('NBA Player Stats')
 #Top menu
 selected_page = option_menu(
     menu_title=None,
-    options=["Player Stats","Team Stats"],
+    options=["Player Stats","Team Stats",'Testing The Model'],
     default_index=0,
     orientation='horizontal'
 )
@@ -341,6 +341,13 @@ if selected_page=='Player Stats':
             ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
         st.pyplot(f)
 
+@st.cache
+def load_combined_exp():
+    df1 = byTeam_exp()
+    df2 = load_data_exp(current_year)
+    df2['W']=df1['W'].astype(int)
+    return df1
+
 #Team stats
 if selected_page=='Team Stats':
     st.header('Average Total Score for Teams')
@@ -349,13 +356,6 @@ if selected_page=='Team Stats':
     """)
 
     st.dataframe(byTeam())
-    dummy = byTeam_exp()
-    dummy1 = load_data_exp(current_year)
-    dummy1['W']=dummy1['W'].astype(int)
-    dummy['W']=dummy1['W'].astype(int)
-    st.dataframe(dummy)
-    # st.dataframe(byTeam_exp())
-    # st.dataframe(load_data_exp(selected_year))
 
     #Plot Teams Data
     st.header('Visualization of Various Parameters Vs. Total Score')
@@ -368,6 +368,10 @@ if selected_page=='Team Stats':
     fig.update_traces(marker_opacity=0)
 
     st.plotly_chart(fig)
+
+#Testing the model
+if selected_page=='Testing The Model':
+    st.dataframe(load_combined_exp())
 
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
