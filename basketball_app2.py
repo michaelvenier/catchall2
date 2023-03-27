@@ -48,7 +48,7 @@ df2 = load_data2() #recent
 
 #Rename columns
 df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
-df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'MP per G','10':'Scoring','11':'Passing','12':'Rebounds','13':'Total Offense','14':'Total Defense','15':'Total Score','16':'MP Threshold'},inplace=True)
+df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'MP/G','10':'Scoring','11':'Passing','12':'Rebounds','13':'Total Offense','14':'Total Defense','15':'Total Score','16':'MP Threshold'},inplace=True)
 #Make data type appropriate
 df2['Year'] = df2['Year'].astype(int)
 df2['Age'] = df2['Age'].astype(int)
