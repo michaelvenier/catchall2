@@ -387,8 +387,18 @@ if selected_page=='Team Stats':
 
 #Testing the model
 if selected_page=='Testing The Model':
+    st.header('Testing the model by comparing to each teams number of wins.')
+    st.markdown("""
+        In the following Table, we have each team's average score averaged over all seasons since the 2015-2016 season. 
+        We also have the number of wins the team has in that time. If these data sets correlate strongly, it is indication
+        that the model is working well.
+        """)
     st.dataframe(load_combined_exp())
-    st.write(corr)
+    st.write('correlation:'+str(corr))
+    st.markdown("""
+        -1 indicates perfect inverse correlation, 0 indicates no correlation and 1 indicates perfect correlation.
+        The closer the number is to 1 the better.
+        """)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
 def filedownload(df):
