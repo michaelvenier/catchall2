@@ -77,17 +77,20 @@ def load_data(year):
 df1 = load_data(selected_year)
 
 def load_data_exp(year):
+
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
-    attrs = {'class': 'sortable', 'id': ['confs_standings_E', 'confs_standings_W']}
 
-    # Read the HTML tables into a list of DataFrames
-    dfs = pd.read_html(url, attrs=attrs)
+    # Read the HTML table into a list of DataFrames
+    dfs = pd.read_html(url)
 
-    # Combine the two DataFrames into one
-    df = pd.concat(dfs)
+    # Select the second DataFrame (index 1)
+    df0 = dfs[0]
+    df1 = df[1]
+    df = pd.concat([df0,df1])
 
     # Select only the columns we want
     df = df['W']
+
     return df
 
 @st.cache()
