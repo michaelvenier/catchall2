@@ -86,8 +86,12 @@ def load_data_exp(year):
     # Select the second DataFrame (index 1)
     df0 = dfs[0]
     df0 = df0[['Eastern Conference','W']]
+    df0.columns=['0','1']
+    df0.rename(columns={'0':'Team','1':'W'},inplace=True)
     df1 = dfs[1]
     df1 = df1[['Western Conference','W']]
+    df1.columns = ['0','1']
+    df1.rename(columns={'0':'Team','1':'W'},inplace=True)
     df = pd.concat([df0,df1])
     df.reset_index(drop=True,inplace=True)
     # Select only the columns we want
