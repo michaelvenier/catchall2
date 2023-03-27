@@ -260,7 +260,7 @@ def byTeam_exp():
     teams.reset_index(drop=True,inplace=True)
     st.dataframe(teams)
     for i in range(len(teams)):
-        filt = df_exp['Team']==teams[i]
+        filt = df_exp['Team']==list(teams)[i]
         df = df_exp[filt]
         if df['MP'].sum()==0:
             avgTot=0
