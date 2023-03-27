@@ -80,7 +80,7 @@ def load_data_exp(year):
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
     dfs = pd.read_html(url, match='Eastern Conference|Western Conference')
     df = pd.concat(dfs)
-    df = df['Team', 'W']
+    df = df['W']
     return df
 
 @st.cache()
