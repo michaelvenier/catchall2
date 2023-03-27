@@ -341,7 +341,7 @@ if selected_page=='Player Stats':
             ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
         st.pyplot(f)
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_combined_exp():
     df1 = byTeam_exp()
     df2 = load_data_exp(current_year)
