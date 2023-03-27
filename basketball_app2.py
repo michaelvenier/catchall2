@@ -78,8 +78,7 @@ df1 = load_data(selected_year)
 
 @st.cache
 def load_data_exp(year):
-
-    url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_standings.html'
+    url = 'https://www.basketball-reference.com/leagues/NBA_'+str(2014)+'_standings.html'
 
     # Read the HTML table into a list of DataFrames
     dfs = pd.read_html(url,header=0)
@@ -127,8 +126,54 @@ def load_data_exp(year):
                 'WAS'
                ]
     df.reset_index(drop=True,inplace=True)
-    # Select only the columns we want
+    for i in range(2015,year+1):
+        url = 'https://www.basketball-reference.com/leagues/NBA_'+str(i)+'_standings.html'
+        dfs = pd.read_html(url,header=0)
 
+        # Select the second DataFrame (index 1)
+        df0 = dfs[0]
+        df0 = df0[['Eastern Conference','W']]
+        df0.columns=['0','1']
+        df0.rename(columns={'0':'Team','1':'W'},inplace=True)
+        df1 = dfs[1]
+        df1 = df1[['Western Conference','W']]
+        df1.columns = ['0','1']
+        df1.rename(columns={'0':'Team','1':'W'},inplace=True)
+        dfTemp = pd.concat([df0,df1])
+        dfTemp.sort_values(by=['Team'],axis=0,ascending=True,inplace=True)
+        dfTemp['Team']=['ATL',
+                'BOS',
+                'BRK',
+                'CHO',
+                'CHI',
+                'CLE',
+                'DAL',
+                'DEN',
+                'DET',
+                'GSW',
+                'HOU',
+                'IND',
+                'LAC',
+                'LAL',
+                'MEM',
+                'MIA',
+                'MIL',
+                'MIN',
+                'NOP',
+                'NYK',
+                'OKC',
+                'ORL',
+                'PHI',
+                'PHO',
+                'POR',
+                'SAC',
+                'SAS',
+                'TOR',
+                'UTA',
+                'WAS'
+               ]
+        dfTemp.reset_index(drop=True,inplace=True)
+        df['W']+=dfTemp['W']
     return df
 
 @st.cache()
