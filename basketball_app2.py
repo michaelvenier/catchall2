@@ -128,6 +128,7 @@ def load_data_exp(year):
                 'UTA',
                 'WAS'
                ]
+    df.sort_values(by=['Team'],axis=0,ascending=True,inplace=True)
     df.reset_index(drop=True,inplace=True)
     for i in range(2017,year+1):
         url = 'https://www.basketball-reference.com/leagues/NBA_'+str(i)+'_standings.html'
@@ -255,7 +256,6 @@ def byTeam():
 
 sorted_unique_team = pd.DataFrame(sorted_unique_team)
 sorted_unique_team.columns=['0']
-st.write(sorted_unique_team['0'][2])
 
 @st.experimental_memo
 def byTeam_exp():
@@ -270,12 +270,6 @@ def byTeam_exp():
             avgTot=0
         else:
             avgTot = ((df['Total Score']*df['MP']).sum())/(df['MP'].sum()) #Weighted average of total weighted by MP. 
-            # avgOff = ((df['Total Offense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of offense weighted by MP.
-            # avgDef = ((df['Total Defense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum()) #Weighted avg of defense weighted by MP. 
-            # avgPass = ((df['Passing']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            # avgScore = ((df['Scoring']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            # avgRebound = ((df['Rebounds']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-            # avgAge = ((df['Age']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
         data.append((selected_team[i],avgTot))
     df = pd.DataFrame(data)
     df.columns = ['0','1']
