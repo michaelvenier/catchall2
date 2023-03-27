@@ -94,7 +94,7 @@ def load_data_exp(year):
     df1.rename(columns={'0':'Team','1':'W'},inplace=True)
     df = pd.concat([df0,df1])
     abbrevs = {
-    'Atlanta Hawks': 'ATL',
+    'Atlanta Hawks (8)': 'ATL',
     'Boston Celtics': 'BOS',
     'Brooklyn Nets': 'BKN',
     'Charlotte Hornets': 'CHO',
