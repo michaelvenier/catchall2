@@ -325,5 +325,5 @@ def filedownload(df):
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
     return href
-
+#
 st.markdown(filedownload(df1), unsafe_allow_html=True)
