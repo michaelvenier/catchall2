@@ -252,6 +252,8 @@ def byTeam():
 
 sorted_unique_team = pd.DataFrame(sorted_unique_team)
 st.dataframe(sorted_unique_team)
+st.dataframe(list(sorted_unique_team))
+st.write(sorted_unique_team[1])
 sorted_unique_team.columns=['0']
 @st.experimental_memo
 def byTeam_exp():
