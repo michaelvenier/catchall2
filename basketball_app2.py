@@ -374,7 +374,7 @@ if selected_page=='Team Stats':
 if selected_page=='Testing The Model':
     st.dataframe(load_combined_exp())
     dfCombined = load_combined_exp()
-    corr = dfCombined['Avg Total'].corr(dfCombined['W'])
+    corr = dfCombined['Avg Total'].corr(dfCombined['W'],meathod='pearson')
     st.write(corr)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
