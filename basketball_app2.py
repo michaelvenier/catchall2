@@ -250,6 +250,7 @@ def byTeam():
     df.rename(columns = {'0':'Team','1':'Avg Total','2':'Avg Off','3':'Avg Def','4':'Avg Passing','5':'Avg Scoring','6':'Avg Rebounds','7':'Avg Age'},inplace=True)
     return df
 
+sorted_unique_team = pd.DataFrame(sorted_unique_team)
 sorted_unique_team.columns=['0','1']
 @st.experimental_memo
 def byTeam_exp():
