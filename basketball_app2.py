@@ -252,7 +252,7 @@ def byTeam():
 
 sorted_unique_team = pd.DataFrame(sorted_unique_team)
 sorted_unique_team.columns=['0']
-st.write(sorted_unique_team['0'][1])
+st.write(sorted_unique_team['0'][2])
 
 @st.experimental_memo
 def byTeam_exp():
@@ -261,7 +261,7 @@ def byTeam_exp():
     teams.reset_index(drop=True,inplace=True)
     st.dataframe(teams)
     for i in range(len(teams)):
-        filt = df_exp['Team']==list(teams)['0'][i]
+        filt = df_exp['Team']==teams['0'][i]
         df = df_exp[filt]
         if df['MP'].sum()==0:
             avgTot=0
