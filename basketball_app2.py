@@ -394,7 +394,7 @@ if selected_page=='Testing The Model':
         that the model is working well.
         """)
     st.dataframe(load_combined_exp())
-    st.write('correlation:'+str(corr))
+    st.write('correlation = '+str(corr))
     st.markdown("""
         -1 indicates perfect inverse correlation, 0 indicates no correlation and 1 indicates perfect correlation.
         The closer the number is to 1 the better.
