@@ -14,9 +14,9 @@ from gspread_pandas import Spread,Client
 
 current_year = int(datetime.date.today().year)
 
-st.title('NBA Player Stats')
+st.title('NBA Analytical Model')
 
-#Top menu
+#Top menu - 3 sections, individual players, team, and testing. 
 selected_page = option_menu(
     menu_title=None,
     options=["Player Stats","Team Stats",'Testing The Model'],
@@ -24,14 +24,14 @@ selected_page = option_menu(
     orientation='horizontal'
 )
 
-st.markdown("""
-This is my model. Here's how to use it.
-""")
-
 #SECTION: GETTING, CLEANING AND FILTERING DATA
 
-@st.experimental_memo #recent
-def load_data2(): #recent
+#Functions ending in 2 are for the model data. Functions ending in _exp are for the Testing the Model section. 
+#Functions ending in nothing are standard stats from the web. 
+
+#Get data from the google sheet. 
+@st.experimental_memo 
+def load_data2(): 
     # Create a connection object.
     credentials = service_account.Credentials.from_service_account_info(
         st.secrets["gcp_service_account"],
@@ -45,13 +45,30 @@ def load_data2(): #recent
     rows = conn.execute(query, headers=0).fetchall()
 
     # Convert data to a Pandas DataFrame.
-    df2 = pd.DataFrame.from_records(rows, columns=rows[0])
-    return df2 #recent
-df2 = load_data2() #recent
+    df = pd.DataFrame.from_records(rows, columns=rows[0])
+    return df 
+df2 = load_data2() #Raw model data. 
 
-#Rename columns
+#Filtering df2: Rename columns
 df2.columns = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
-df2.rename(columns={'0':'Scenario','1':'Year','2':'Player','3':'Position','4':'Age','5':'Team','6':'G','7':'GS','8':'MP','9':'MP/G','10':'Scoring','11':'Passing','12':'Rebounds','13':'Total Offense','14':'Total Defense','15':'Total Score','16':'MP Threshold'},inplace=True)
+df2.rename(columns={'0':'Scenario',
+    '1':'Year','2':'Player',
+    '3':'Position',
+    '4':'Age',
+    '5':'Team',
+    '6':'G',
+    '7':'GS',
+    '8':'MP',
+    '9':'MP/G',
+    '10':'Scoring',
+    '11':'Passing',
+    '12':'Rebounds',
+    '13':'Total Offense',
+    '14':'Total Defense',
+    '15':'Total Score',
+    '16':'MP Threshold'}
+    ,inplace=True
+    )
 #Make data type appropriate
 df2['Year'] = df2['Year'].astype(int)
 df2['Age'] = df2['Age'].astype(int)
@@ -63,12 +80,12 @@ df2.drop('MP Threshold',axis=1,inplace=True) #Delete unneeded column.
     
 #User input year and filtering model data by selected year (Sidebar). This needs to be above load_data, a function of year.
 st.sidebar.header('User Input Features')
-selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2024))))
+selected_year = st.sidebar.selectbox('Year', list(reversed(range(2014,current_year+1))))
 df_exp = df2 #This unfiltered data will be used when running the experiment to test the model. See line 
 df2 = df2[df2['Year']==selected_year] #Filter by selected year
 
 # Web scraping of NBA player stats from basketball-reference.com
-@st.cache()
+@st.cache
 def load_data(year):
     url = "https://www.basketball-reference.com/leagues/NBA_" + str(year) + "_per_game.html"
     html = pd.read_html(url, header = 0)
@@ -79,8 +96,26 @@ def load_data(year):
     return df1
 df1 = load_data(selected_year)
 
+
 @st.cache
-def load_data_exp(year):
+def load_data_playoffs(year):
+    url = "https://www.basketball-reference.com/playoffs/NBA_" + str(year) + "_per_game.html"
+    response = requests.get(url)
+    if response.status_code == 404: #Accounting for if the playoffs haven't happened yet ie the link doesn't exist. 
+        return None
+    html = pd.read_html(url, header=0)
+    df = html[0]
+    raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
+    raw = raw.fillna(0)
+    df1 = raw.drop(['Rk'], axis=1)
+    return df1
+
+dfTemp = load_data_playoffs(selected_year)
+if load_data_playoffs(selected_year) is not None:
+    dfP = load_data_playoffs(selected_year)
+
+@st.cache
+def load_data_exp(year=current_year): #Counting the number of wins for each time since 2016. 
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(2016)+'_standings.html'
 
     # Read the HTML table into a list of DataFrames
@@ -181,21 +216,6 @@ def load_data_exp(year):
         df['W']+=dfTemp['W']
     return df
 
-@st.cache()
-def load_data_playoffs(year):
-    url = "https://www.basketball-reference.com/playoffs/NBA_" + str(year) + "_per_game.html"
-    response = requests.get(url)
-    if response.status_code == 404:
-        return None
-    html = pd.read_html(url, header=0)
-    df = html[0]
-    raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
-    raw = raw.fillna(0)
-    df1 = raw.drop(['Rk'], axis=1)
-    return df1
-dfTemp = load_data_playoffs(selected_year)
-if load_data_playoffs(selected_year) is not None:
-    dfP = load_data_playoffs(selected_year)
 
 # User input Position selection and filtering data by positions
 unique_pos = ['C','PF','SF','PG','SG']
@@ -258,8 +278,9 @@ def byTeam():
 sorted_unique_team = pd.DataFrame(sorted_unique_team)
 sorted_unique_team.columns=['0']
 
+#This will be combined with load_data_exp for the Testing section of the site. 
 @st.experimental_memo
-def byTeam_exp():
+def byTeam_exp(): 
     data = []
     teams = sorted_unique_team[sorted_unique_team['0'] != 'TOT']
     teams.reset_index(drop=True,inplace=True)
@@ -278,12 +299,13 @@ def byTeam_exp():
     df.sort_values(by='Team',axis=0,ascending=True,inplace=True)
     return df
 
-players = [] #Players are manually selected (via user search) in line 154
+players = [] #Players are manually selected (via user search)
+@st.experimental_memo
 def byPlayer():
     filt = df2.Player.isin(players)
     df = df2[filt]
     return df
-#
+
 @st.experimental_memo
 def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NEEDS WORK *&$#(* &^# *&^# (*&#^ )*$&^()*&@ )*(&^# )(*^&@)
     listt = []
@@ -303,16 +325,16 @@ def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NE
 
 #Player stats
 if selected_page=='Player Stats':
+    st.markdown("""
+    This is my model. Here's how to use it.
+    """)
     st.header('Standard Stats from Basketball Reference')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
     if scenario=='Regular Season':
         st.dataframe(df1)
-    if scenario=='Playoffs':
+    if scenario=='Playoffs': #Make this an else. 
         st.dataframe(dfP)
     st.header('The Model Data')
-#     length = len(df2['Player'])
-#     tooltips_df = pd.DataFrame({'Scenario':['']*10,'Year':'','Player':'','Position':'','Age':'','Team':'','G':'Games Played','GS':'Games Started','MP':'Minutes Played','Scoring':'','Passing':'','Rebounds':'','Total Offense':'','Total Defense':'','Total Score':''})
-#     df2 = df2.style.set_tooltips(tooltips_df)
     st.dataframe(df2)
     #st.dataframe(df2)
 
