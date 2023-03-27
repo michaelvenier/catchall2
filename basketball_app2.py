@@ -94,7 +94,7 @@ def load_data_exp(year):
     df1.rename(columns={'0':'Team','1':'W'},inplace=True)
     df = pd.concat([df0,df1])
     abbrevs = {'Atlanta Hawks (8)': 'ATL','Boston Celtics (2)': 'BOS','Brooklyn Nets (7)': 'BKN','Charlotte Hornets (14)': 'CHO','Chicago Bulls (10)': 'CHI','Cleveland Cavaliers (4)': 'CLE','Dallas Mavericks (11)': 'DAL','Denver Nuggets (1)': 'DEN','Detroit Pistons (15)': 'DET','Golden State Warriors (6)': 'GSW','Houston Rockets (15)': 'HOU','Indiana Pacers (11)': 'IND','Los Angeles Clippers (5)': 'LAC','Los Angeles Lakers (9)': 'LAL','Memphis Grizzlies (2)': 'MEM','Miami Heat (6)': 'MIA','Milwaukee Bucks (1)': 'MIL','Minnesota Timberwolves (7)': 'MIN','New Orleans Pelicans (8)': 'NOP','New York Knicks (5)': 'NYK','Oklahoma City Thunder (10)': 'OKC','Orlando Magic (13)': 'ORL','Philadelphia 76ers (3)': 'PHI','Phoenix Suns (4)': 'PHX','Portland Trail Blazers (13)': 'POR','Sacramento Kings (3)': 'SAC','San Antonio Spurs (4)': 'SAS','Toronto Raptors (9)': 'TOR','Utah Jazz (12)': 'UTA','Washington Wizards (12)': 'WAS'}
-    df['Team'] = df['Team'].replace(abbrevs)
+    df['Team'] = df['Team'].replace(abbrevs,inplace=True)
     df.reset_index(drop=True,inplace=True)
     # Select only the columns we want
 
