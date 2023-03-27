@@ -253,7 +253,8 @@ def byTeam():
 @st.experimental_memo
 def byTeam_exp():
     data = []
-    teams = sorted_unique_team.remove('TOT')
+    teams = list(sorted_unique_team).remove('TOT')
+    st.dataframe(sorted_unique_team)
     st.dataframe(teams)
     for i in range(len(teams)):
         filt = df_exp['Team']==teams[i]
