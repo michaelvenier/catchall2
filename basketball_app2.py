@@ -85,9 +85,9 @@ def load_data_exp(year):
 
     # Select the second DataFrame (index 1)
     df0 = dfs[0]
-    df0 = df0['Eastern Conference']
+    df0 = df0[['Eastern Conference','W']]
     df1 = dfs[1]
-    df1 = df1['Western Conference']
+    df1 = df1[['Western Conference','W']]
     df = pd.concat([df0,df1])
     df.reset_index(drop=True,inplace=True)
     # Select only the columns we want
