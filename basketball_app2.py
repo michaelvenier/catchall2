@@ -115,7 +115,7 @@ if load_data_playoffs(selected_year) is not None:
     dfP = load_data_playoffs(selected_year)
 
 @st.cache
-def load_data_exp(year=current_year): #Counting the number of wins for each time since 2016. 
+def load_data_exp(year=current_year): #Counting the number of wins for each time since 2016. Will be combined with byTeam_exp
     url = 'https://www.basketball-reference.com/leagues/NBA_'+str(2016)+'_standings.html'
 
     # Read the HTML table into a list of DataFrames
@@ -278,6 +278,7 @@ def byTeam():
 sorted_unique_team = pd.DataFrame(sorted_unique_team)
 sorted_unique_team.columns=['0']
 
+#This is similar to above, but uses df_exp, which hasn't been filtered by year. This way we can average over several years. 
 #This will be combined with load_data_exp for the Testing section of the site. 
 @st.experimental_memo
 def byTeam_exp(): 
@@ -299,6 +300,19 @@ def byTeam_exp():
     df.sort_values(by='Team',axis=0,ascending=True,inplace=True)
     return df
 
+#Combining byTeam_exp (Model avg) and load_data_exp (number of wins). We'll see how these things correlate to test the model. 
+@st.cache(allow_output_mutation=True)
+def load_combined_exp():
+    df1 = byTeam_exp() #Model avg score over several years
+    df2 = load_data_exp(current_year) #Number of wins over the past several years, to compare to. 
+    df2['W']=df2['W'].astype(int)
+    df1['W']=df2['W'].astype(int)
+    return df1
+
+dfCombined = load_combined_exp()
+corr = dfCombined['Avg Total'].corr(dfCombined['W'])
+
+
 players = [] #Players are manually selected (via user search)
 @st.experimental_memo
 def byPlayer():
@@ -306,27 +320,14 @@ def byPlayer():
     df = df2[filt]
     return df
 
-@st.experimental_memo
-def byX(year,teams,positions,mp,x): #A team stat that graphs by X like below. NEEDS WORK *&$#(* &^# *&^# (*&#^ )*$&^()*&@ )*(&^# )(*^&@)
-    listt = []
-    for i in range(min(df[x])):
-        filt = df2['Age']==i
-        df = df2[filt]
-        avgTot = ((df['Total Score']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-        avgOff = ((df['Total Offense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-        avgDef = ((df['Total Defense']*df['Total Minutes']).sum())/(df['Total Minutes'].sum())
-        listt.append((teams[i],avgTot,avgOff,avgDef))
-    df = pd.DataFrame(listt)
-    df.columns = ['0','1','2','3']
-    df.rename(columns = {'0':'Team','1':'Avg Total','2':'Avg Off','3':'Avg Def'},inplace=True)
-    return df
 
-#SECTION: DISPLAYING DATA ON THE SITE. 
+#SECTION: DISPLAYING DATA ON THE SITE. Displays everything that isn't needed directly for filtering. Things needed for filtering were displayed
+#as they were introduced. 
 
 #Player stats
 if selected_page=='Player Stats':
     st.markdown("""
-    This is my model. Here's how to use it.
+    This is my model. There are also standard NBA stats for comparison.
     """)
     st.header('Standard Stats from Basketball Reference')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
@@ -363,14 +364,6 @@ if selected_page=='Player Stats':
             ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
         st.pyplot(f)
 
-@st.cache(allow_output_mutation=True)
-def load_combined_exp():
-    df1 = byTeam_exp()
-    df2 = load_data_exp(current_year)
-    df2['W']=df2['W'].astype(int)
-    df1['W']=df2['W'].astype(int)
-    return df1
-
 #Team stats
 if selected_page=='Team Stats':
     st.header('Average Total Score for Teams')
@@ -395,8 +388,6 @@ if selected_page=='Team Stats':
 #Testing the model
 if selected_page=='Testing The Model':
     st.dataframe(load_combined_exp())
-    dfCombined = load_combined_exp()
-    corr = dfCombined['Avg Total'].corr(dfCombined['W'])
     st.write(corr)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
