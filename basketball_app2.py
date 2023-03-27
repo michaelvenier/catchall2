@@ -256,8 +256,8 @@ sorted_unique_team.columns=['0']
 @st.experimental_memo
 def byTeam_exp():
     data = []
-    st.dataframe(sorted_unique_team)
     teams = sorted_unique_team[sorted_unique_team['0'] != 'TOT']
+    st.dataframe(teams)
     for i in range(len(teams)):
         filt = df_exp['Team']==teams[i]
         df = df_exp[filt]
