@@ -85,8 +85,8 @@ def load_data_exp(year):
 
     # Select the second DataFrame (index 1)
     df0 = dfs[0]
-#    df1 = df[1]
-#    df = pd.concat([df0,df1])
+    df1 = dfs[1]
+    df = pd.concat([df0,df1])
 
     # Select only the columns we want
     df = df0['W']
