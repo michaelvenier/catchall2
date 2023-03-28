@@ -348,7 +348,7 @@ if selected_page=='Player Stats':
 
     #Visualization
     st.header('Visualization of Various Parameters Vs. Total Score')
-    X = st.selectbox('X Axis',['Age','Team','Total Minutes','Scoring','Passing','Rebounds','Total Offense','Total Defense'])
+    X = st.selectbox('X Axis',['Age','Team','MP','Scoring','Passing','Rebounds','Total Offense','Total Defense'])
     fig = px.scatter(df2,x=X,y='Total Score',hover_data=['Player'])
     st.plotly_chart(fig)
 
