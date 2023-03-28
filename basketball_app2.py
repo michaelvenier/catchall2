@@ -375,7 +375,7 @@ if selected_page=='Player Stats':
         mask2[np.triu_indices_from(mask2)] = True
         with sns.axes_style("white"):
             f2, ax2 = plt.subplots(figsize=(7, 5))
-            ax2 = sns.heatmap(corr, mask=mask2, vmax=1, square=True)
+            ax2 = sns.heatmap(corrHeat2, mask=mask2, vmax=1, square=True)
         st.pyplot(f2)
 
 #Team stats
