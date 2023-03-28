@@ -353,7 +353,7 @@ if selected_page=='Player Stats':
     fig = px.scatter(df2,x=X,y='Total Score',hover_data=['Player'])
     st.plotly_chart(fig)
 
-    # Heatmap. 
+    # Heatmap. Edit
     if st.button('Intercorrelation Heatmap'):
         st.header('Intercorrelation Matrix Heatmap')
         df1.to_csv('output.csv',index=False)
