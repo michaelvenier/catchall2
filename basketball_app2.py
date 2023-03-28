@@ -329,7 +329,7 @@ def byPlayer():
 #Player stats
 if selected_page=='Player Stats':
     st.markdown("""
-    This is my model. There are also standard NBA stats for comparison.
+    Explore data produced by the catchall analytical model! There are also standard NBA stats for comparison.
     """)
     st.header('Standard Stats from Basketball Reference')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
