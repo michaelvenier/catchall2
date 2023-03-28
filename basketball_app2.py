@@ -404,10 +404,17 @@ if selected_page=='Testing The Model':
         """)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
-def filedownload(df):
+def filedownload2(df):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
+    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (current data being displayed)</a>'
     return href
-#
-st.markdown(filedownload(df2), unsafe_allow_html=True)
+
+def filedownload_exp(df):
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
+    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (Data for all years and players)</a>'
+    return href
+
+st.markdown(filedownload2(df1), unsafe_allow_html=True)
+st.markdown(filedownload_exp(df_exp),unsafe_allow_html=True)
