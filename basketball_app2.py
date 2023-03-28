@@ -16,8 +16,7 @@ current_year = int(datetime.date.today().year)
 
 st.title('NBA Analytical Model')
 
-st.markdown("---")
-st.write("## Contact: catchallbball@gmail.com")
+st.sidebar.write("Contact: catchallbball@gmail.com")
 
 #Top menu - 3 sections, individual players, team, and testing. 
 selected_page = option_menu(
