@@ -365,6 +365,7 @@ if selected_page=='Player Stats':
         with sns.axes_style("white"):
             f1, ax1 = plt.subplots(figsize=(7, 5))
             ax1 = sns.heatmap(corrHeat1, mask=mask1, vmax=1, square=True)
+        plt.title('Standard Data')
         st.pyplot(f1)
 
         df2.to_csv('output.csv',index=False)
