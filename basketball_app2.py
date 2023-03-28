@@ -356,7 +356,7 @@ if selected_page=='Player Stats':
     # Heatmap. 
     if st.button('Intercorrelation Heatmap'):
         st.header('Intercorrelation Matrix Heatmap')
-        df2.to_csv('output.csv',index=False)
+        df1.to_csv('output.csv',index=False)
         df = pd.read_csv('output.csv')
 
         corr = df.corr()
