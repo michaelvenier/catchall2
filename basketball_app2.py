@@ -356,15 +356,26 @@ if selected_page=='Player Stats':
     # Heatmap. Edit
     if st.button('Intercorrelation Heatmap'):
         st.header('Intercorrelation Matrix Heatmap')
-        df2.to_csv('output.csv',index=False)
-        df = pd.read_csv('output.csv')
+        df1.to_csv('output.csv',index=False)
+        dfHeat1 = pd.read_csv('output.csv')
 
-        corr = df.corr()
-        mask = np.zeros_like(corr)
-        mask[np.triu_indices_from(mask)] = True
+        corrHeat1 = dfHeat1.corr()
+        mask1 = np.zeros_like(corrHeat1)
+        mask1[np.triu_indices_from(mask1)] = True
         with sns.axes_style("white"):
-            f, ax = plt.subplots(figsize=(7, 5))
-            ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
+            f1, ax1 = plt.subplots(figsize=(7, 5))
+            ax1 = sns.heatmap(corrHeat1, mask=mask1, vmax=1, square=True)
+        st.pyplot(f)
+
+        df2.to_csv('output.csv',index=False)
+        dfHeat2 = pd.read_csv('output.csv')
+
+        corrHeat2 = dfHeat2.corr()
+        mask2 = np.zeros_like(corrHeat2)
+        mask2[np.triu_indices_from(mask2)] = True
+        with sns.axes_style("white"):
+            f2, ax2 = plt.subplots(figsize=(7, 5))
+            ax2 = sns.heatmap(corr, mask=mask2, vmax=1, square=True)
         st.pyplot(f)
 
 #Team stats
