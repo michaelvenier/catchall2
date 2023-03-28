@@ -376,6 +376,7 @@ if selected_page=='Player Stats':
         with sns.axes_style("white"):
             f2, ax2 = plt.subplots(figsize=(7, 5))
             ax2 = sns.heatmap(corrHeat2, mask=mask2, vmax=1, square=True)
+        plt.title('Model Data')
         st.pyplot(f2)
 
 #Team stats
