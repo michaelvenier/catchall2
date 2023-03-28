@@ -410,4 +410,4 @@ def filedownload(df):
     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
     return href
 #
-st.markdown(filedownload(df1), unsafe_allow_html=True)
+st.markdown(filedownload(df2), unsafe_allow_html=True)
