@@ -12,7 +12,7 @@ from google.oauth2 import service_account
 from gsheetsdb import connect
 from gspread_pandas import Spread,Client
 
-current_year = int(datetime.date.today().year)
+current_year = int(datetime.date.today().year) 
 
 st.title('NBA Analytical Model')
 
@@ -28,8 +28,9 @@ selected_page = option_menu(
 
 #SECTION: GETTING, CLEANING AND FILTERING DATA
 
-#Functions ending in 2 are for the model data. Functions ending in _exp are for the Testing the Model section. 
-#Functions ending in nothing are standard stats from the web. 
+#Functions/variables ending in 2 are for the model data. 
+# Functions/vars ending in _exp are for the Testing the Model section. 
+#Functions/vars ending in nothing or 1 are standard stats from the web. 
 
 #Get data from the google sheet. 
 @st.experimental_memo 
