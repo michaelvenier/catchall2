@@ -241,7 +241,7 @@ df2 = df2[df2.Team.isin(selected_team)]
 
 #Minutes Played Filter (We don't always want players with low minutes to be included)
 max_games_played = min([82,max(df2['G'])]) #Roughly how many games have been played in the season so far? 
-default_mins = int((max_games_played/82)*1200)
+default_mins = int((max_games_played/82)*1250)
 if scenario=='Playoffs': #In the playoffs we start with 0 as the minimum since lots of teams play very few games.
     mp = int(st.sidebar.text_input('Minimum Minutes Played','0'))
 else:
@@ -317,7 +317,7 @@ corr = dfCombined['Avg Total'].corr(dfCombined['W'])
 
 
 players = [] #Players are manually selected (via user search)
-@st.experimental_memo
+#@st.experimental_memo
 def byPlayer():
     filt = df2.Player.isin(players)
     df = df2[filt]
@@ -332,14 +332,15 @@ if selected_page=='Player Stats':
     st.markdown("""
     Explore data produced by the catchall analytical model! There are also standard NBA stats for comparison.
     """)
+    st.header('The Model Data')
+    st.dataframe(df2)
     st.header('Standard Stats from Basketball Reference')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
     if scenario=='Regular Season':
         st.dataframe(df1)
     if scenario=='Playoffs': #Make this an else. 
         st.dataframe(dfP)
-    st.header('The Model Data')
-    st.dataframe(df2)
+
     #st.dataframe(df2)
 
     #Search by player
