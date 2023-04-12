@@ -18,13 +18,14 @@ st.title('Catchall NBA Analytical Model')
 
 st.sidebar.write("Contact: catchallbball@gmail.com")
 
+selected_page='Player Stats'
 #Top menu - 3 sections, individual players, team, and testing. 
-selected_page = option_menu(
-    menu_title=None,
-    options=["Player Stats","Team Stats",'Testing The Model'],
-    default_index=0,
-    orientation='horizontal'
-)
+# selected_page = option_menu(
+#     menu_title=None,
+#     options=["Player Stats","Team Stats",'Testing The Model'],
+#     default_index=0,
+#     orientation='horizontal'
+# )
 
 #SECTION: GETTING, CLEANING AND FILTERING DATA
 
@@ -355,68 +356,68 @@ if selected_page=='Player Stats':
     fig = px.scatter(df2[df2['Team']==team],x=X,y='Total Score',hover_data=['Player'])
     st.plotly_chart(fig)
 
-    # Heatmap. Edit
-    if st.button('Intercorrelation Heatmap'):
-        st.header('Intercorrelation Matrix Heatmap')
-        df1.to_csv('output.csv',index=False)
-        dfHeat1 = pd.read_csv('output.csv')
+    # Heatmap
+    # if st.button('Intercorrelation Heatmap'):
+    #     st.header('Intercorrelation Matrix Heatmap')
+    #     df1.to_csv('output.csv',index=False)
+    #     dfHeat1 = pd.read_csv('output.csv')
 
-        corrHeat1 = dfHeat1.corr()
-        mask1 = np.zeros_like(corrHeat1)
-        mask1[np.triu_indices_from(mask1)] = True
-        with sns.axes_style("white"):
-            f1, ax1 = plt.subplots(figsize=(7, 5))
-            ax1 = sns.heatmap(corrHeat1, mask=mask1, vmax=1, square=True)
-        plt.title('Standard Data')
-        st.pyplot(f1)
+    #     corrHeat1 = dfHeat1.corr()
+    #     mask1 = np.zeros_like(corrHeat1)
+    #     mask1[np.triu_indices_from(mask1)] = True
+    #     with sns.axes_style("white"):
+    #         f1, ax1 = plt.subplots(figsize=(7, 5))
+    #         ax1 = sns.heatmap(corrHeat1, mask=mask1, vmax=1, square=True)
+    #     plt.title('Standard Data')
+    #     st.pyplot(f1)
 
-        df2.to_csv('output.csv',index=False)
-        dfHeat2 = pd.read_csv('output.csv')
+    #     df2.to_csv('output.csv',index=False)
+    #     dfHeat2 = pd.read_csv('output.csv')
 
-        corrHeat2 = dfHeat2.corr()
-        mask2 = np.zeros_like(corrHeat2)
-        mask2[np.triu_indices_from(mask2)] = True
-        with sns.axes_style("white"):
-            f2, ax2 = plt.subplots(figsize=(7, 5))
-            ax2 = sns.heatmap(corrHeat2, mask=mask2, vmax=1, square=True)
-        plt.title('Model Data')
-        st.pyplot(f2)
+    #     corrHeat2 = dfHeat2.corr()
+    #     mask2 = np.zeros_like(corrHeat2)
+    #     mask2[np.triu_indices_from(mask2)] = True
+    #     with sns.axes_style("white"):
+    #         f2, ax2 = plt.subplots(figsize=(7, 5))
+    #         ax2 = sns.heatmap(corrHeat2, mask=mask2, vmax=1, square=True)
+    #     plt.title('Model Data')
+    #     st.pyplot(f2)
 
 #Team stats
-if selected_page=='Team Stats':
-    st.header('Average Total Score for Teams')
-    st.markdown("""
-    Weighted by minutes played
-    """)
+# if selected_page=='Team Stats':
+#     st.header('Average Total Score for Teams')
+#     st.markdown("""
+#     Weighted by minutes played
+#     """)
 
-    st.dataframe(byTeam())
+#     st.dataframe(byTeam())
 
-    #Plot Teams Data
-    st.header('Visualization of Various Parameters Vs. Total Score')
-    X2 = st.selectbox('X Axis',['Team', 'Avg Total', 'Avg Off', 'Avg Def', 'Avg Passing', 'Avg Scoring', 'Avg Rebounds', 'Avg Age'])
-    fig = px.scatter(byTeam(),x=X2,y='Avg Total', labels={'x':'Index','y':'Avg Score'},text='Team',title="Weighted by Minutes Played")
-    fig.update_layout(yaxis_title='Avg Total')
-    fig.update_layout(xaxis=dict(showticklabels=True))
-    if X2=='Team':
-        fig.update_layout(xaxis=dict(showticklabels=False))
-    fig.update_traces(marker_opacity=0)
+#     #Plot Teams Data
+#     st.header('Visualization of Various Parameters Vs. Total Score')
+#     X2 = st.selectbox('X Axis',['Team', 'Avg Total', 'Avg Off', 'Avg Def', 'Avg Passing', 'Avg Scoring', 'Avg Rebounds', 'Avg Age'])
+#     fig = px.scatter(byTeam(),x=X2,y='Avg Total', labels={'x':'Index','y':'Avg Score'},text='Team',title="Weighted by Minutes Played")
+#     fig.update_layout(yaxis_title='Avg Total')
+#     fig.update_layout(xaxis=dict(showticklabels=True))
+#     if X2=='Team':
+#         fig.update_layout(xaxis=dict(showticklabels=False))
+#     fig.update_traces(marker_opacity=0)
 
-    st.plotly_chart(fig)
+#     st.plotly_chart(fig)
 
-#Testing the model
-if selected_page=='Testing The Model':
-    st.header('Testing the model by comparing to each teams number of wins.')
-    st.markdown("""
-        In the following Table, we have each team's average score averaged over all seasons since the 2015-2016 season. 
-        We also have the number of wins the team has in that time. If these data sets correlate strongly, it is indication
-        that the model is working well.
-        """)
-    st.dataframe(load_combined_exp())
-    st.write('correlation = '+str(corr))
-    st.markdown("""
-        -1 indicates perfect inverse correlation, 0 indicates no correlation and 1 indicates perfect correlation.
-        The closer the number is to 1 the better.
-        """)
+# #Testing the model
+# if selected_page=='Testing The Model':
+#     st.header('Testing the model by comparing to each teams number of wins.')
+#     st.markdown("""
+#         In the following Table, we have each team's average score averaged over all seasons since the 2015-2016 season. 
+#         We also have the number of wins the team has in that time. If these data sets correlate strongly, it is indication
+#         that the model is working well.
+#         """)
+#     st.dataframe(load_combined_exp())
+#     st.write('correlation = '+str(corr))
+#     st.markdown("""
+#         -1 indicates perfect inverse correlation, 0 indicates no correlation and 1 indicates perfect correlation.
+#         The closer the number is to 1 the better.
+#         """)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
 # def filedownload2(df):
