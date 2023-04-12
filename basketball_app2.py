@@ -350,9 +350,9 @@ if selected_page=='Player Stats':
 
     #Visualization
     st.header('Visualization of Various Parameters Vs. Total Score')
-    team = st.selectbox('Team',list(sorted_unique_team))
+    team = st.selectbox('Team',sorted_unique_team)
     X = st.selectbox('X Axis',['MP','Team','Age','Scoring','Passing','Rebounds','Total Offense','Total Defense'])
-    fig = px.scatter(df2[df2['Team'==team]],x=X,y='Total Score',hover_data=['Player'])
+    fig = px.scatter(df2[df2['Team']==team],x=X,y='Total Score',hover_data=['Player'])
     st.plotly_chart(fig)
 
     # Heatmap. Edit
