@@ -334,7 +334,7 @@ if selected_page=='Player Stats':
     """)
     st.header('The Model Data')
     st.dataframe(df2)
-    st.header('Standard Stats from Basketball Reference')
+    st.header('Traditional Stats Per Game')
     st.write('Data Dimension: ' + str(df1.shape[0]) + ' rows and ' + str(df1.shape[1]) + ' columns.')
     if scenario=='Regular Season':
         st.dataframe(df1)
@@ -350,8 +350,9 @@ if selected_page=='Player Stats':
 
     #Visualization
     st.header('Visualization of Various Parameters Vs. Total Score')
-    X = st.selectbox('X Axis',['Age','Team','MP','Scoring','Passing','Rebounds','Total Offense','Total Defense'])
-    fig = px.scatter(df2,x=X,y='Total Score',hover_data=['Player'])
+    team = st.selectbox('Team',list(sorted_unique_team))
+    X = st.selectbox('X Axis',['MP','Team','Age','Scoring','Passing','Rebounds','Total Offense','Total Defense'])
+    fig = px.scatter(df2[df2['Team'==team]],x=X,y='Total Score',hover_data=['Player'])
     st.plotly_chart(fig)
 
     # Heatmap. Edit
@@ -418,17 +419,17 @@ if selected_page=='Testing The Model':
         """)
     # Download NBA player stats data
     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
-def filedownload2(df):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (current data being displayed)</a>'
-    return href
+# def filedownload2(df):
+#     csv = df.to_csv(index=False)
+#     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
+#     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (current data being displayed)</a>'
+#     return href
 
-def filedownload_exp(df):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (Data for all years and players)</a>'
-    return href
+# def filedownload_exp(df):
+#     csv = df.to_csv(index=False)
+#     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
+#     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download the model data CSV File (Data for all years and players)</a>'
+#     return href
 
-st.markdown(filedownload2(df1), unsafe_allow_html=True)
-st.markdown(filedownload_exp(df_exp),unsafe_allow_html=True)
+# st.markdown(filedownload2(df1), unsafe_allow_html=True)
+# st.markdown(filedownload_exp(df_exp),unsafe_allow_html=True)
