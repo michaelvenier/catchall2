@@ -14,7 +14,7 @@ from gspread_pandas import Spread,Client
 
 current_year = int(datetime.date.today().year) 
 
-st.title('NBA Analytical Model')
+st.title('Catchall NBA Analytical Model')
 
 st.sidebar.write("Contact: catchallbball@gmail.com")
 
